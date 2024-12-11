@@ -10,9 +10,10 @@ if __name__ == "__main__":
     
     # 分类组合
     combinations = [(4, 9), (4, 6), (0, 1), (2, 7)]
-    
+
+    output_dir = "output"
     # 实例化Trainer 类
-    trainer = LogisticRegressionTrainer(output_dir="output", lr=0.01, max_iters=5000, patience=10)
+    trainer = LogisticRegressionTrainer(output_dir=output_dir, lr=0.01, max_iters=5000, patience=10)
     
     # 为每一组组合训练并保存结果
     for comb in combinations:
