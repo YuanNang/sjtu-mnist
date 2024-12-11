@@ -12,11 +12,11 @@ if __name__ == "__main__":
     combinations = [(4, 9), (4, 6), (0, 1), (2, 7)]
 
     output_dir = "output"
-    # 实例化Trainer 类
-    trainer = LogisticRegressionTrainer(output_dir=output_dir, lr=0.01, max_iters=5000, patience=10)
-    
+    trainer = LogisticRegressionTrainer(output_dir=output_dir)
+
     # 为每一组组合训练并保存结果
     for comb in combinations:
         # 实例化 LogisticRegressor 模型
-        lr_model = LogisticRegressor(lr=0.01, max_iters=5000, patience=10)
+        lr_model = LogisticRegressor(lr=0.01, max_iters=5000, patience=10, regularization_strength=0.01)
+        # 实例化Trainer 类
         trainer.train_and_save_results(X, y, comb, lr_model)

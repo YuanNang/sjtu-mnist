@@ -7,18 +7,12 @@ from sklearn.metrics import classification_report, roc_curve, auc, confusion_mat
 import logging
 
 class LogisticRegressionTrainer:
-    def __init__(self, output_dir="output", lr=0.01, max_iters=5000, patience=10):
+    def __init__(self, output_dir="output"):
         """
         初始化训练器类。
         :param output_dir: 保存输出结果的目录
-        :param lr: 学习率
-        :param max_iters: 最大训练迭代次数
-        :param patience: 验证集损失未改善的最大容忍次数
         """
         self.output_dir = output_dir
-        self.lr = lr
-        self.max_iters = max_iters
-        self.patience = patience
         os.makedirs(self.output_dir, exist_ok=True)  # 创建输出目录（如果不存在）
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 

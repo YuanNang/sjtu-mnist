@@ -2,18 +2,20 @@ import numpy as np
 import logging
 
 class LogisticRegressor:
-    def __init__(self, lr=0.01, max_iters=1000, log_output=True, patience=5):
+    def __init__(self, lr=0.01, max_iters=1000, log_output=True, patience=5, regularization_strength=0.1):
         """
         初始化逻辑回归模型。
         :param lr: 学习率
         :param max_iters: 最大迭代次数
         :param log_output: 是否输出日志
         :param patience: 早停的容忍次数
+        :param regularization_strength: 正则化强度（L2 正则化系数）
         """
         self.lr = lr
         self.max_iters = max_iters
         self.log_output = log_output
         self.patience = patience
+        self.regularization_strength = regularization_strength
         self.params = None  # 模型的权重参数
         self.bias = None    # 模型的偏置参数
 
@@ -34,7 +36,8 @@ class LogisticRegressor:
         """
         epsilon = 1e-15  # 防止数值稳定性问题
         y_pred = np.clip(y_pred, epsilon, 1 - epsilon)  # 将预测值限制在 (epsilon, 1 - epsilon) 范围内
-        return -np.mean(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))
+        regularization_term = (self.regularization_strength / 2) * np.sum(self.params ** 2)  # L2 正则化项
+        return -np.mean(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred)) + regularization_term
 
     def initialize_parameters(self, num_features):
         """
@@ -61,7 +64,7 @@ class LogisticRegressor:
         :return: 权重梯度和偏置梯度
         """
         num_samples = X.shape[0]
-        grad_weights = (1 / num_samples) * np.dot(X.T, (y_pred - y))  # 权重梯度
+        grad_weights = (1 / num_samples) * np.dot(X.T, (y_pred - y)) + self.regularization_strength * self.params  # 权重梯度（加上正则化项）
         grad_bias = (1 / num_samples) * np.sum(y_pred - y)            # 偏置梯度
         return grad_weights, grad_bias
 
